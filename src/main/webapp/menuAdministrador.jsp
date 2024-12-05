@@ -31,7 +31,7 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNavDropdown">
 				<ul class="navbar-nav">
-					<li class="nav-item"><a class="nav-link" href="#">Inicio</a></li>
+					<li class="nav-item"><a class="nav-link" href="index.jsp">Inicio</a></li>
 					<li class="nav-item"><a class="nav-link" href="#">Nosotros</a></li>
 					<li class="nav-item"><a class="nav-link" href="#">Eventos</a></li>
 					<li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
