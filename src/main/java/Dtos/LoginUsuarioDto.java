@@ -1,5 +1,12 @@
 package Dtos;
 
+/**
+ * Clase DTO para representar las credenciales de un usuario al momento de iniciar sesión.
+ * <p>
+ * Este objeto se utiliza para enviar y recibir los datos de inicio de sesión del usuario, 
+ * como el correo electrónico, la contraseña y el rol, a través de la API.
+ * </p>
+ */
 public class LoginUsuarioDto {
 
     private Long id;
