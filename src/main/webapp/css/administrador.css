@@ -12,6 +12,9 @@ h1 {
     margin-bottom: 30px;
     color: #333;
 }
+h2{
+	text-align: center;
+}
 
 /* Contenedor principal */
 .container {

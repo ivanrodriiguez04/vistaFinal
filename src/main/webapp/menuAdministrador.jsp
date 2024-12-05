@@ -27,8 +27,12 @@
                         <input type="number" id="idUsuario" name="idUsuario" required>
                         <label for="nuevoNombre">Nuevo Nombre:</label>
                         <input type="text" id="nuevoNombre" name="nuevoNombre">
+                        <label for="nuevoDni">Nuevo DNI:</label>
+                        <input type="text" id="nuevoDni" name="nuevoDni">
                         <label for="nuevoTelefono">Nuevo Teléfono:</label>
                         <input type="text" id="nuevoTelefono" name="nuevoTelefono">
+                        <label for="nuevoRol">Nuevo Rol:</label>
+                        <input type="text" id="nuevoRol" name="nuevoRol">
                         <label for="nuevaFoto">Nueva Foto:</label>
                         <input type="file" id="nuevaFoto" name="nuevaFoto" accept="image/*">
                         <button type="submit">Modificar Usuario</button>

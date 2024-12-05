@@ -7,11 +7,12 @@ import java.util.Scanner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import Dtos.ModificarClubDto;
 import Dtos.ModificarUsuarioDto;
 
 public class ModificarServicio {
     // Método para modificar un usuario
-    public String modificarUsuario(long idUsuario, String nuevoNombre, String nuevoTelefono, byte[] nuevaFoto) {
+    public String modificarUsuario(long idUsuario, String nuevoNombre, String nuevoDni,String nuevoTelefono, String nuevoRol,byte[] nuevaFoto) {
         String boundary = "*****" + System.currentTimeMillis() + "*****"; // Límite para multipart
         try {
             URL url = new URL("http://localhost:8081/api/modificar/modificarUsuario/" + idUsuario);
@@ -29,14 +30,25 @@ public class ModificarServicio {
                 dos.writeBytes("Content-Disposition: form-data; name=\"nuevoNombre\"\r\n\r\n");
                 dos.writeBytes(nuevoNombre + "\r\n");
             }
-
+            // Campo nuevoTelefono
+            if (nuevoDni != null) {
+                dos.writeBytes("--" + boundary + "\r\n");
+                dos.writeBytes("Content-Disposition: form-data; name=\"nuevoDni\"\r\n\r\n");
+                dos.writeBytes(nuevoDni + "\r\n");
+            }
+            
             // Campo nuevoTelefono
             if (nuevoTelefono != null) {
                 dos.writeBytes("--" + boundary + "\r\n");
                 dos.writeBytes("Content-Disposition: form-data; name=\"nuevoTelefono\"\r\n\r\n");
                 dos.writeBytes(nuevoTelefono + "\r\n");
             }
-
+         // Campo nuevoTelefono
+            if (nuevoRol != null) {
+                dos.writeBytes("--" + boundary + "\r\n");
+                dos.writeBytes("Content-Disposition: form-data; name=\"nuevoRol\"\r\n\r\n");
+                dos.writeBytes(nuevoRol + "\r\n");
+            }
             // Campo nuevaFoto
             if (nuevaFoto != null) {
                 dos.writeBytes("--" + boundary + "\r\n");
@@ -74,7 +86,7 @@ public class ModificarServicio {
     // Método para obtener usuario por ID
     public ModificarUsuarioDto obtenerUsuarioPorId(long idUsuario) {
         try {
-            URL url = new URL("http://localhost:8081/api/modificar/buscar/" + idUsuario);
+            URL url = new URL("http://localhost:8081/api/modificar/buscarUsuario/" + idUsuario);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setDoOutput(true);
@@ -102,6 +114,95 @@ public class ModificarServicio {
         }
     }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public String modificarClub(long idClub, String nuevoNombre, String nuevaSede, byte[] nuevaFoto) {
+        String boundary = "*****" + System.currentTimeMillis() + "*****"; // Límite para multipart
+        try {
+            URL url = new URL("http://localhost:8081/api/modificar/modificarClub/" + idClub);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("PUT");
+            conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+            conn.setDoOutput(true);
+
+            // Construir cuerpo multipart
+            DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
+
+            // Campo nuevoNombre
+            if (nuevoNombre != null) {
+                dos.writeBytes("--" + boundary + "\r\n");
+                dos.writeBytes("Content-Disposition: form-data; name=\"nuevoNombre\"\r\n\r\n");
+                dos.writeBytes(nuevoNombre + "\r\n");
+            }
+
+            // Campo nuevoTelefono
+            if (nuevaSede != null) {
+                dos.writeBytes("--" + boundary + "\r\n");
+                dos.writeBytes("Content-Disposition: form-data; name=\"nuevaSede\"\r\n\r\n");
+                dos.writeBytes(nuevaSede + "\r\n");
+            }
+
+            // Campo nuevaFoto
+            if (nuevaFoto != null) {
+                dos.writeBytes("--" + boundary + "\r\n");
+                dos.writeBytes("Content-Disposition: form-data; name=\"nuevaFoto\"; filename=\"foto.jpg\"\r\n");
+                dos.writeBytes("Content-Type: image/jpeg\r\n\r\n");
+                dos.write(nuevaFoto);
+                dos.writeBytes("\r\n");
+            }
+
+            dos.writeBytes("--" + boundary + "--\r\n");
+            dos.flush();
+            dos.close();
+
+            // Leer respuesta
+            int responseCode = conn.getResponseCode();
+            if (responseCode == 200) {
+                StringBuilder response = new StringBuilder();
+                try (Scanner scanner = new Scanner(conn.getInputStream())) {
+                    while (scanner.hasNextLine()) {
+                        response.append(scanner.nextLine());
+                    }
+                }
+                return response.toString();
+            } else {
+                return "Error: Código de respuesta HTTP " + responseCode;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error al conectar con la API: " + e.getMessage();
+        }
+    }
     
+    
+    // Método para obtener usuario por ID
+    public ModificarClubDto obtenerClubPorId(long idClub) {
+        try {
+            URL url = new URL("http://localhost:8081/api/modificar/buscarClub/" + idClub);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setDoOutput(true);
+
+            int responseCode = conn.getResponseCode();
+            if (responseCode == 200) {
+                // Leer la respuesta (usuario) y convertirla en un objeto UsuarioDTO
+                Scanner scanner = new Scanner(conn.getInputStream());
+                StringBuilder response = new StringBuilder();
+                while (scanner.hasNextLine()) {
+                    response.append(scanner.nextLine());
+                }
+                scanner.close();
+
+                // Usamos Jackson ObjectMapper para convertir la respuesta JSON en un objeto UsuarioDTO
+                ObjectMapper objectMapper = new ObjectMapper();
+                return objectMapper.readValue(response.toString(), ModificarClubDto.class);
+            } else {
+                return null; // Si no encuentra al usuario, retornamos null
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // Error al conectar con la API
+        }
+    }
     
 }

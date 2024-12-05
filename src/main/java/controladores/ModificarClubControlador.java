@@ -11,13 +11,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
-@WebServlet("/modificarUsuario")
+@WebServlet("/modificarClub")
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10,      // 10MB
         maxRequestSize = 1024 * 1024 * 50   // 50MB
 )
-public class ModificarUsuarioControlador extends HttpServlet{
+public class ModificarClubControlador extends HttpServlet{
 	private ModificarServicio modificarServicio;
 
 	@Override
@@ -28,11 +28,9 @@ public class ModificarUsuarioControlador extends HttpServlet{
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             // Recuperar parámetros del formulario
-            long idUsuario = Long.parseLong(request.getParameter("idUsuario"));
+            long idClub = Long.parseLong(request.getParameter("idClub"));
             String nuevoNombre = request.getParameter("nuevoNombre");
-            String nuevoDni=request.getParameter("nuevoDni");
-            String nuevoTelefono = request.getParameter("nuevoTelefono");
-            String nuevoRol=request.getParameter("nuevoRol");
+            String nuevaSede = request.getParameter("nuevaSede");
 
             // Procesar el archivo de la foto
             Part fotoPart = request.getPart("nuevaFoto");
@@ -43,7 +41,7 @@ public class ModificarUsuarioControlador extends HttpServlet{
             }
 
             // Llamar al servicio API
-            String resultado = modificarServicio.modificarUsuario(idUsuario, nuevoNombre, nuevoDni,nuevoTelefono, nuevoRol,nuevaFoto);
+            String resultado = modificarServicio.modificarClub(idClub, nuevoNombre, nuevaSede, nuevaFoto);
 
             // Redirigir con el resultado
             request.setAttribute("resultado", resultado);
