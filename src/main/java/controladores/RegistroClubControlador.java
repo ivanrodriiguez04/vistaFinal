@@ -2,7 +2,7 @@ package controladores;
 
 import java.io.IOException;
 
-import Dtos.RegistroUsuarioDto;
+import Dtos.RegistroClubDto;
 import Servicios.RegistroServicio;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,30 +18,29 @@ public class RegistroClubControlador extends HttpServlet{
         this.registroServicio = new RegistroServicio();
     }
 	@Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Recoger los parámetros del formulario de registro
-        String nombre = request.getParameter("nombreClub");
-        String sede = request.getParameter("sedeClub");
-        String correo = request.getParameter("emailClub");
-        String password = request.getParameter("passwordClub");
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	        throws ServletException, IOException {
+	    String nombre = request.getParameter("nombreClub");
+	    String sede = request.getParameter("sedeClub");
+	    String correo = request.getParameter("emailClub");
+	    String password = request.getParameter("passwordClub");
 
-        // Crear el objeto DTO con los datos del usuario
-        RegistroUsuarioDto registroDto = new RegistroUsuarioDto();
-        registroDto.setNombreUsuario(nombre);
-        registroDto.setTelefonoUsuario(sede);
-        registroDto.setEmailUsuario(correo);
-        registroDto.setPasswordUsuario(password);
+	    // Ajustar el DTO para que coincida con el backend
+	    RegistroClubDto registroDto = new RegistroClubDto();
+	    registroDto.setNombreClub(nombre);
+	    registroDto.setSedeClub(sede);
+	    registroDto.setEmailClub(correo);
+	    registroDto.setPasswordClub(password);
 
-        // Llamar al servicio para registrar al usuario
-        boolean registroExitoso = registroServicio.registrarClub(registroDto);
+	    // Llamar al servicio para registrar el club
+	    boolean registroExitoso = registroServicio.registrarClub(registroDto);
 
-        if (registroExitoso) {
-            // Registro exitoso, redirigir a la página de inicio o login
-            response.sendRedirect("iniciarSesionClub.jsp");
-        } else {
-            // Si el registro falló (correo ya existente), mostrar un mensaje de error
-            request.setAttribute("errorMessage", "El correo ya está registrado.");
-            request.getRequestDispatcher("registrarseUsuario.jsp").forward(request, response);
-        }
-    }
+	    if (registroExitoso) {
+	        response.sendRedirect("iniciarSesionClub.jsp");
+	    } else {
+	        request.setAttribute("errorMessage", "El correo ya está registrado.");
+	        request.getRequestDispatcher("registrarseUsuario.jsp").forward(request, response);
+	    }
+	}
+
 }

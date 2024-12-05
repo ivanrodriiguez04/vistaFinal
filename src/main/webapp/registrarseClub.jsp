@@ -25,7 +25,7 @@
 		</h3>
 
 		<!-- Formulario de registro -->
-		<form id="registerClubForm" action="registroClub" methos="POST">
+		<form id="registerClubForm" action="registroClub" method="POST">
 			<!-- Nombre del club -->
 			<div class="mb-3">
 				<input type="text" id="nombreClub" name="nombreClub"
