@@ -40,7 +40,7 @@ public class LoginUsuarioControlador extends HttpServlet {
             System.out.println("Rol del usuario: " + rol);
             if ("admin".equals(rol)) {
                 // Redirigir al panel de administración
-                response.sendRedirect("administrador.jsp");
+                response.sendRedirect("menuAdministrador.jsp");
             } else if ("usuario".equals(rol)) {
                 // Redirigir al panel de usuario
                 response.sendRedirect("index.jsp");
